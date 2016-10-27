@@ -26,6 +26,23 @@ public class QuestionManager : MonoBehaviour {
         SetQuestion();
 	}
 
+    private void HideButtons()
+    {
+        for(int i =0; i < buttons.Count; i++)
+        {
+            buttons[i].transform.localScale = Vector3.zero;
+        }
+    }
+
+    private void AnimateButtons()
+    {
+        for(int i =0; i < buttons.Count; i++)
+        {
+            LeanTween.scale(buttons[i].gameObject, new Vector3(1f, 1f, 1f), 2.0f + 0.2f * i)
+                            .setEase(LeanTweenType.easeOutBounce);    
+        }
+    }
+
     private void SortAnswer()
     {
         ShuffleButtons();
@@ -49,6 +66,7 @@ public class QuestionManager : MonoBehaviour {
 
     private void SetQuestion()
     {
+        HideButtons();
         SortAnswer();
         questionText.text = question.text;
         PlayQuestion();
@@ -60,6 +78,7 @@ public class QuestionManager : MonoBehaviour {
         questionSource.Play();
         answerSource.clip = answers[correctAnswerIndex].audio;
         answerSource.PlayDelayed(question.audio.length);
+        AnimateButtons();
     }
 
     private void SetupAnswerButton(AnswerButton button,int index)
